@@ -196,7 +196,7 @@ renderer/app.js  →  window.api.*  →  tauri-bridge.js  →  Rust #[tauri::com
 
 <div align="center">
 
-ساخته‌شده با ❤️ توسط **MahdiDev**
+ساخته‌شده با ❤️ توسط **مهدی حیدرپور**
 
 [mahdi-hp.ir](https://mahdi-hp.ir) · [github.com/MahdiHpg](https://github.com/MahdiHpg)
 
