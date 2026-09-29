@@ -1,0 +1,6 @@
+{
+  "identifier": "default",
+  "description": "دسترسی‌های پایه‌ی پنجره‌ی اصلی DNS Switcher",
+  "windows": ["main"],
+  "permissions": ["core:default"]
+}

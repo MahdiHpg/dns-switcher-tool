@@ -1,0 +1,20 @@
+{
+  "name": "dns-switcher",
+  "productName": "DNS Switcher",
+  "version": "1.1.0",
+  "description": "Modern DNS switcher for Windows — profiles, drag-reorder, per-profile colors, appearance settings",
+  "author": "MahdiDev",
+  "license": "MIT",
+  "homepage": "https://mahdi-hp.ir",
+  "private": true,
+  "scripts": {
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "tauri": "tauri",
+    "test": "cargo test --manifest-path src-tauri/Cargo.toml",
+    "icon": "node make-icon.js"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2"
+  }
+}

@@ -1,0 +1,15 @@
+# نرمال‌سازی خط‌پایان‌ها (Line endings)
+# متن‌ها همیشه با LF ذخیره می‌شوند تا مخزن روی هر سیستمی تمیز بماند.
+* text=auto eol=lf
+
+# فایل‌های دودویی — دست نزن
+*.ico   binary
+*.png   binary
+*.woff2 binary
+*.exe   binary
+*.dll   binary
+
+# اسکریپت‌های ویندوزی بهتر است CRLF بمانند
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+*.ps1   text eol=crlf
