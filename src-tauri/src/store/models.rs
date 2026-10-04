@@ -27,6 +27,9 @@ pub struct Profile {
     pub icon: String,
     #[serde(default)]
     pub color: String,
+    /// فولدر پیش‌فرض برنامه — قابل حذف است به‌جز «عمومی»
+    #[serde(default)]
+    pub builtin: bool,
 }
 
 impl Profile {
@@ -36,6 +39,18 @@ impl Profile {
             name: name.to_string(),
             icon: icon.to_string(),
             color: color.to_string(),
+            builtin: true,
+        }
+    }
+
+    /// پروفایل ساخته‌ی کاربر — قابل حذف و ویرایش کامل
+    pub fn custom(id: String, name: String, icon: String, color: String) -> Self {
+        Self {
+            id,
+            name,
+            icon,
+            color,
+            builtin: false,
         }
     }
 }

@@ -40,6 +40,18 @@ pub fn store_reorder_dns_list(ordered_ids: Vec<String>) -> Value {
     to_value(store::dns_list::reorder_dns_list(ordered_ids))
 }
 
+/// لیست کلیدهای آیکون SVG برای آیکون‌پیکر رندرر
+#[tauri::command]
+pub fn store_folder_icons() -> Vec<String> {
+    store::icons::ICONS.iter().map(|(key, _)| (*key).to_string()).collect()
+}
+
+/// SVG آماده‌ی رندر برای مقدار آیکون هر فولدر (کلید، ایموجی قدیمی یا ناشناخته)
+#[tauri::command]
+pub fn store_icon_svgs(values: Vec<String>) -> Vec<String> {
+    values.iter().map(|value| store::icons::svg_or_fallback(value)).collect()
+}
+
 #[tauri::command]
 pub fn store_clear_dns_list() -> Value {
     to_value(store::dns_list::clear_dns_list())
@@ -146,6 +158,11 @@ pub fn store_update_profile(id: String, patch: Value) -> Value {
 #[tauri::command]
 pub fn store_delete_profile(id: String) -> bool {
     store::profiles::delete_profile(&id)
+}
+
+#[tauri::command]
+pub fn store_reorder_profiles(ordered_ids: Vec<String>) -> Value {
+    to_value(store::profiles::reorder_profiles(ordered_ids))
 }
 
 // ---------- تنظیمات ----------

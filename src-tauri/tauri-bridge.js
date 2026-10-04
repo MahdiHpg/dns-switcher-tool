@@ -36,6 +36,9 @@
     addProfile: (name, icon, color) => invoke('store_add_profile', { name, icon, color }),
     updateProfile: (id, patch) => invoke('store_update_profile', { id, patch }),
     deleteProfile: (id) => invoke('store_delete_profile', { id }),
+    reorderProfiles: (orderedIds) => invoke('store_reorder_profiles', { orderedIds }),
+    folderIcons: () => invoke('store_folder_icons'),
+    iconSvgs: (values) => invoke('store_icon_svgs', { values }),
 
     // ---------- settings ----------
     getSettings: () => invoke('store_get_settings'),

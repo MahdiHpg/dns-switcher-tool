@@ -9,6 +9,9 @@ node_modules/
 dist/
 npm-debug.log*
 
+.freebuff
+.mimosa
+
 # ---------- دادهٔ محلی برنامه ----------
 # هر کاربر دادهٔ خودش را در %APPDATA%/DNS Switcher/data دارد
 data/

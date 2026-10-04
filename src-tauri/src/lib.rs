@@ -32,6 +32,7 @@ fn create_main_window(app: &tauri::App) -> tauri::Result<()> {
         .inner_size(1040.0, 720.0)
         .min_inner_size(900.0, 620.0)
         .center()
+        .disable_drag_drop_handler()
         .initialization_script(include_str!("../tauri-bridge.js"))
         .build()?;
     Ok(())
@@ -65,6 +66,9 @@ pub fn run() {
             commands::store_cmds::store_add_profile,
             commands::store_cmds::store_update_profile,
             commands::store_cmds::store_delete_profile,
+            commands::store_cmds::store_reorder_profiles,
+            commands::store_cmds::store_folder_icons,
+            commands::store_cmds::store_icon_svgs,
             commands::store_cmds::store_get_settings,
             commands::store_cmds::store_save_settings,
             commands::store_cmds::store_restore_seed,

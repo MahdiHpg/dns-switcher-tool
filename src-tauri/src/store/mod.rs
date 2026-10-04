@@ -5,6 +5,7 @@
 //! ورود اولیه، و `settings` تنظیمات ظاهری.
 
 pub mod dns_list;
+pub mod icons;
 pub mod models;
 pub mod parse_bat;
 pub mod profiles;
@@ -76,6 +77,22 @@ pub fn random_suffix() -> u128 {
 /// کوتاه‌کردن متن بر اساس تعداد کاراکتر (نه بایت)
 pub fn clamp_chars(value: &str, max: usize) -> String {
     value.chars().take(max).collect()
+}
+
+/// جانگزاری HTML برای درج امن در innerHTML رندرر
+pub fn escape_html(value: &str) -> String {
+    let mut out = String::with_capacity(value.len());
+    for c in value.chars() {
+        match c {
+            '&' => out.push_str("&amp;"),
+            '<' => out.push_str("&lt;"),
+            '>' => out.push_str("&gt;"),
+            '"' => out.push_str("&quot;"),
+            '\'' => out.push_str("&#39;"),
+            other => out.push(other),
+        }
+    }
+    out
 }
 
 /// تبدیل مقدار JSON به متن؛ `null` یعنی «مقداری ارسال نشده»

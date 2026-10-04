@@ -20,7 +20,10 @@
           <span class="brand-title" data-i18n="appName">DNS Switcher</span>
           <span class="brand-sub" data-i18n="appTagline">سوییچر سریع DNS</span>
         </div>
-        <button id="themeToggle" class="icon-btn" title="Theme">
+        <button id="langToggle" class="icon-btn lang-btn" title="Language" data-i18n-title="language">
+          <span class="lang-tag" id="langTag">EN</span>
+        </button>
+        <button id="themeToggle" class="icon-btn" title="Theme" data-i18n-title="theme">
           <span class="theme-icon"></span>
         </button>
       </div>
@@ -110,19 +113,19 @@
     <div class="modal">
       <div class="modal-head">
         <h3 id="modalTitle" data-i18n="addDnsTitle">افزودن DNS جدید</h3>
-        <button id="modalClose" class="icon-btn" title="Close">✕</button>
+        <button id="modalClose" class="icon-btn" title="Close" data-i18n-title="close">✕</button>
       </div>
       <div class="modal-body">
         <label class="field">
           <span class="field-label" data-i18n="fieldName">نام</span>
-          <input id="fName" type="text" placeholder="مثلاً: شکن" />
+          <input id="fName" type="text" placeholder="مثلاً: شکن" data-i18n-ph="namePh" />
         </label>
         <label class="field">
-          <span class="field-label">Primary DNS</span>
+          <span class="field-label" data-i18n="primaryDns">Primary DNS</span>
           <input id="fPrimary" type="text" placeholder="178.22.122.100" dir="ltr" class="ltr" />
         </label>
         <label class="field">
-          <span class="field-label">Secondary DNS</span>
+          <span class="field-label" data-i18n="secondaryDns">Secondary DNS</span>
           <input id="fSecondary" type="text" placeholder="185.51.200.2" dir="ltr" class="ltr" />
         </label>
         <label class="field">
@@ -142,17 +145,17 @@
     <div class="modal">
       <div class="modal-head">
         <h3 data-i18n="profilesTitle">مدیریت پروفایل‌ها</h3>
-        <button id="profilesClose" class="icon-btn" title="Close">✕</button>
+        <button id="profilesClose" class="icon-btn" title="Close" data-i18n-title="close">✕</button>
       </div>
       <div class="modal-body">
         <div id="profilesList" class="profiles-list"></div>
         <div class="profile-new">
-          <input id="npIcon" class="icon-input" type="text" maxlength="4" placeholder="📁" />
+          <button id="npIcon" class="icon-input icon-pick-btn" type="button" title="Choose icon">📁</button>
           <input id="npName" type="text" data-i18n-ph="newProfilePh" placeholder="نام پروفایل جدید" />
-          <input id="npColor" type="color" value="#a855f7" title="Color" />
+          <input id="npColor" type="color" value="#a855f7" title="Color" data-i18n-title="color" />
           <button id="npAdd" class="btn btn-primary">+</button>
         </div>
-        <p class="modal-note" data-i18n="profilesNote">حذف پروفایل، DNSهای آن را به «عمومی» منتقل می‌کند. پروفایل پیش‌فرض حذف‌شدنی نیست.</p>
+        <p class="modal-note" data-i18n="profilesNote">حذف فولدر، DNSهای آن را به فولدر «عمومی» منتقل می‌کند. فقط فولدر «عمومی» حذف‌شدنی نیست؛ راست‌کلیک روی هر فولدر برای تغییر نام، آیکون یا حذف. برای مرتب‌سازی، ردیف‌ها را از دسته‌ی ⠿ بکشید.</p>
       </div>
       <div class="modal-foot">
         <button id="profilesDone" class="btn btn-primary" data-i18n="done">تمام</button>
@@ -165,10 +168,17 @@
     <div class="modal">
       <div class="modal-head">
         <h3 data-i18n="settingsTitle">تنظیمات ظاهری</h3>
-        <button id="settingsClose" class="icon-btn" title="Close">✕</button>
+        <button id="settingsClose" class="icon-btn" title="Close" data-i18n-title="close">✕</button>
       </div>
       <div class="modal-body">
         <div class="settings-grid">
+          <label class="field">
+            <span class="field-label" data-i18n="language">زبان / Language</span>
+            <div class="seg" id="langSeg">
+              <button type="button" class="seg-btn" data-lang="fa">فارسی</button>
+              <button type="button" class="seg-btn" data-lang="en">English</button>
+            </div>
+          </label>
           <label class="field">
             <span class="field-label" data-i18n="accentColor">رنگ اصلی پوسته</span>
             <div class="color-row">
@@ -190,10 +200,10 @@
           <label class="field">
             <span class="field-label" data-i18n="fontFamily">فونت</span>
             <select id="sFontFamily" class="select">
-              <option value="Vazirmatn">وزیرمتن (پیش‌فرض)</option>
+              <option value="Vazirmatn" data-i18n="fontVazir">وزیرمتن (پیش‌فرض)</option>
               <option value="Segoe UI">Segoe UI</option>
               <option value="Tahoma">Tahoma</option>
-              <option value="IRANSans">ایران‌سنس (سیستمی)</option>
+              <option value="IRANSans" data-i18n="fontIranSans">ایران‌سنس (سیستمی)</option>
             </select>
           </label>
           <label class="field checkbox-field">
