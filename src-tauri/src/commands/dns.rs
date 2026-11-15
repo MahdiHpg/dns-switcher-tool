@@ -1,8 +1,9 @@
-//! فرمان‌های مربوط به سرویس DNS — معادل بخش `dns:*` در `ipc.js`
+//! فرمان‌های مربوط به سرویس DNS — معادل بخش `dns:*`
 
+use std::collections::HashMap;
 use serde_json::{json, Value};
 
-use crate::dns_service::{self, ElevatedResult};
+use crate::dns_service::{self, ElevatedResult, ServiceCheck};
 
 #[tauri::command]
 pub fn dns_get_adapters() -> Value {
@@ -33,4 +34,29 @@ pub fn dns_flush() -> Value {
 #[tauri::command]
 pub fn dns_is_admin() -> Value {
     json!({ "admin": dns_service::is_admin() })
+}
+
+#[tauri::command]
+pub async fn dns_ping(ips: Vec<String>) -> HashMap<String, Option<u64>> {
+    dns_service::benchmark_dns_list(ips).await
+}
+
+#[tauri::command]
+pub async fn dns_check_reachability() -> Vec<ServiceCheck> {
+    dns_service::check_all_services().await
+}
+
+#[tauri::command]
+pub fn dns_is_autostart_enabled() -> bool {
+    dns_service::is_autostart_enabled()
+}
+
+#[tauri::command]
+pub fn dns_set_autostart(enable: bool) -> Result<(), String> {
+    dns_service::set_autostart(enable)
+}
+
+#[tauri::command]
+pub fn dns_set_doh(ip: String, template: String) -> Result<(), String> {
+    dns_service::set_doh_template(&ip, &template)
 }

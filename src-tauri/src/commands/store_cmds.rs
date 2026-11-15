@@ -181,3 +181,35 @@ pub fn store_save_settings(patch: Value) -> Value {
 pub fn store_restore_seed() -> Value {
     json!({ "added": store::seed::restore_curated_seed() })
 }
+
+#[tauri::command]
+pub fn store_export_backup() -> Value {
+    store::export_import::export_all_data()
+}
+
+#[tauri::command]
+pub fn store_import_backup(data: Value) -> Value {
+    match store::export_import::import_all_data(&data) {
+        Ok(count) => json!({ "ok": true, "imported": count }),
+        Err(err) => json!({ "ok": false, "error": err }),
+    }
+}
+
+#[tauri::command]
+pub fn store_fetch_remote_dns(url: String) -> Value {
+    let script = format!(
+        "[Console]::OutputEncoding=[System.Text.Encoding]::UTF8; Invoke-RestMethod -Uri '{}' -TimeoutSec 10 | ConvertTo-Json -Depth 5 -Compress",
+        url.replace('\'', "''")
+    );
+    let res = crate::dns_service::exec::run("powershell.exe", &["-NoProfile", "-Command", &script]);
+    if !res.ok {
+        return json!({ "ok": false, "error": res.stderr });
+    }
+    match serde_json::from_str::<Value>(&res.stdout) {
+        Ok(data) => match store::export_import::import_all_data(&data) {
+            Ok(count) => json!({ "ok": true, "added": count }),
+            Err(err) => json!({ "ok": false, "error": err }),
+        },
+        Err(e) => json!({ "ok": false, "error": format!("پاسخ معتبر JSON دریافت نشد: {}", e) }),
+    }
+}

@@ -98,10 +98,13 @@ fn build_script(ops: &[DnsOp], flush: bool, out_path: &str) -> String {
         if iface.is_empty() {
             continue;
         }
+        let is_ipv6_addr = !op.ip.is_empty() && super::validate::is_ipv6(&op.ip);
+        let proto = if is_ipv6_addr { "ipv6" } else { "ipv4" };
+
         let (command, kind, with_ip) = match op.kind {
             OpKind::Set => (
                 format!(
-                    "netsh interface ipv4 set dns name=\"{iface}\" source=static address={} validate=no",
+                    "netsh interface {proto} set dns name=\"{iface}\" source=static address={} validate=no",
                     op.ip
                 ),
                 "set",
@@ -109,14 +112,14 @@ fn build_script(ops: &[DnsOp], flush: bool, out_path: &str) -> String {
             ),
             OpKind::Add => (
                 format!(
-                    "netsh interface ipv4 add dns name=\"{iface}\" address={} index=2 validate=no",
+                    "netsh interface {proto} add dns name=\"{iface}\" address={} index=2 validate=no",
                     op.ip
                 ),
                 "add",
                 true,
             ),
             OpKind::Delete => (
-                format!("netsh interface ipv4 delete dns name=\"{iface}\" all"),
+                format!("netsh interface ipv4 delete dns name=\"{iface}\" all; netsh interface ipv6 delete dns name=\"{iface}\" all"),
                 "clear",
                 false,
             ),

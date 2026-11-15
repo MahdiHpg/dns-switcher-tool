@@ -3,9 +3,8 @@
 /**
  * پل میان رابط کاربری و هسته‌ی Rust — جانشین `preload.js` نسخه‌ی Electron.
  *
- * این فایل پیش از اجرای `app.js` تزریق می‌شود و دقیقاً همان متدهای قبلیِ
- * `window.api` را با همان نام و همان شکل بازگشتی می‌سازد، پس هیچ تغییری در
- * فایل‌های رابط کاربری لازم نیست.
+ * این فایل پیش از اجرای جاوااسکریپت تزریق می‌شود و متدهای `window.api` را
+ * با توابع ناهمگام متصل به دستورات Rust می‌سازد.
  */
 (() => {
   const invoke = (command, args) => {
@@ -21,6 +20,11 @@
     clearDns: (payload) => invoke('dns_clear', { payload }),
     flushDns: () => invoke('dns_flush'),
     isAdmin: () => invoke('dns_is_admin'),
+    pingDns: (ips) => invoke('dns_ping', { ips }),
+    checkReachability: () => invoke('dns_check_reachability'),
+    isAutostartEnabled: () => invoke('dns_is_autostart_enabled'),
+    setAutostart: (enable) => invoke('dns_set_autostart', { enable }),
+    setDoh: (ip, template) => invoke('dns_set_doh', { ip, template }),
 
     // ---------- dns list ----------
     getDnsList: () => invoke('store_get_dns_list'),
@@ -40,10 +44,13 @@
     folderIcons: () => invoke('store_folder_icons'),
     iconSvgs: (values) => invoke('store_icon_svgs', { values }),
 
-    // ---------- settings ----------
+    // ---------- settings & backup ----------
     getSettings: () => invoke('store_get_settings'),
     saveSettings: (patch) => invoke('store_save_settings', { patch }),
     restoreSeed: () => invoke('store_restore_seed'),
+    exportBackup: () => invoke('store_export_backup'),
+    importBackup: (data) => invoke('store_import_backup', { data }),
+    fetchRemoteDns: (url) => invoke('store_fetch_remote_dns', { url }),
 
     // ---------- app ----------
     getAppInfo: () => invoke('app_get_info'),

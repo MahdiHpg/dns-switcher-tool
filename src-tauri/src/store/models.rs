@@ -14,6 +14,12 @@ pub struct DnsEntry {
     pub secondary: String,
     #[serde(default)]
     pub profile_id: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub primary_ipv6: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub secondary_ipv6: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub doh_template: Option<String>,
 }
 
 /// یک دسته‌بندی (پروفایل) در `profiles.json`

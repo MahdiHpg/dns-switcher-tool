@@ -50,6 +50,9 @@ pub fn save_dns_list(list: Vec<DnsEntry>) -> Vec<DnsEntry> {
                 primary,
                 secondary: entry.secondary.trim().to_string(),
                 profile_id,
+                primary_ipv6: entry.primary_ipv6.filter(|s| !s.trim().is_empty()),
+                secondary_ipv6: entry.secondary_ipv6.filter(|s| !s.trim().is_empty()),
+                doh_template: entry.doh_template.filter(|s| !s.trim().is_empty()),
             })
         })
         .collect();
@@ -89,6 +92,12 @@ pub fn add_dns(entry: &Value) -> DnsEntry {
         profile_id: as_text(entry.get("profileId").unwrap_or(&Value::Null))
             .filter(|id| !id.trim().is_empty())
             .unwrap_or_else(|| "general".to_string()),
+        primary_ipv6: as_text(entry.get("primaryIpv6").unwrap_or(&Value::Null))
+            .filter(|s| !s.trim().is_empty()),
+        secondary_ipv6: as_text(entry.get("secondaryIpv6").unwrap_or(&Value::Null))
+            .filter(|s| !s.trim().is_empty()),
+        doh_template: as_text(entry.get("dohTemplate").unwrap_or(&Value::Null))
+            .filter(|s| !s.trim().is_empty()),
     };
     list.push(item.clone());
     save_dns_list(list);
@@ -113,6 +122,15 @@ pub fn update_dns(id: &str, patch: &Value) -> Option<DnsEntry> {
     }
     if let Some(value) = patch.get("profileId").and_then(as_text) {
         item.profile_id = value;
+    }
+    if let Some(value) = patch.get("primaryIpv6") {
+        item.primary_ipv6 = as_text(value).filter(|s| !s.trim().is_empty());
+    }
+    if let Some(value) = patch.get("secondaryIpv6") {
+        item.secondary_ipv6 = as_text(value).filter(|s| !s.trim().is_empty());
+    }
+    if let Some(value) = patch.get("dohTemplate") {
+        item.doh_template = as_text(value).filter(|s| !s.trim().is_empty());
     }
 
     let updated = item.clone();

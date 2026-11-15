@@ -5,6 +5,7 @@
 //! ورود اولیه، و `settings` تنظیمات ظاهری.
 
 pub mod dns_list;
+pub mod export_import;
 pub mod icons;
 pub mod models;
 pub mod parse_bat;

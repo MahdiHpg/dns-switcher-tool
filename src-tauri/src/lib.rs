@@ -1,10 +1,11 @@
 //! DNS Switcher — هسته‌ی Rust جایگزین Electron
 //!
-//! رابط کاربری همان `renderer/` قبلی است و فقط لایه‌ی پل (`tauri-bridge.js`) عوض شده.
+//! رابط کاربری مدرن در `renderer/` و ارتباط امن از طریق لایه‌ی پل (`tauri-bridge.js`).
 
 pub mod commands;
 pub mod dns_service;
 pub mod store;
+pub mod tray;
 
 use std::path::PathBuf;
 
@@ -27,14 +28,23 @@ fn seed_dir() -> PathBuf {
 }
 
 fn create_main_window(app: &tauri::App) -> tauri::Result<()> {
-    WebviewWindowBuilder::new(app, "main", WebviewUrl::App("index.html".into()))
+    let window = WebviewWindowBuilder::new(app, "main", WebviewUrl::App("index.html".into()))
         .title("DNS Switcher")
-        .inner_size(1040.0, 720.0)
-        .min_inner_size(900.0, 620.0)
+        .inner_size(1080.0, 740.0)
+        .min_inner_size(520.0, 420.0)
         .center()
         .disable_drag_drop_handler()
         .initialization_script(include_str!("../tauri-bridge.js"))
         .build()?;
+
+    let window_clone = window.clone();
+    window.on_window_event(move |event| {
+        if let tauri::WindowEvent::CloseRequested { api, .. } = event {
+            api.prevent_close();
+            let _ = window_clone.hide();
+        }
+    });
+
     Ok(())
 }
 
@@ -43,18 +53,25 @@ pub fn run() {
         // باید اولین پلاگین ثبت‌شده باشد تا پنجره‌ی دوم به نمونه‌ی اول برگردد
         .plugin(tauri_plugin_single_instance::init(|app, _argv, _cwd| {
             if let Some(window) = app.get_webview_window("main") {
-                let _ = window.unminimize();
                 let _ = window.show();
+                let _ = window.unminimize();
                 let _ = window.set_focus();
             }
         }))
         .plugin(tauri_plugin_dialog::init())
         .invoke_handler(tauri::generate_handler![
+            // سرویس‌های اصلی DNS
             commands::dns::dns_get_adapters,
             commands::dns::dns_apply,
             commands::dns::dns_clear,
             commands::dns::dns_flush,
             commands::dns::dns_is_admin,
+            commands::dns::dns_ping,
+            commands::dns::dns_check_reachability,
+            commands::dns::dns_is_autostart_enabled,
+            commands::dns::dns_set_autostart,
+            commands::dns::dns_set_doh,
+            // داده‌ها و پروفایل‌ها
             commands::store_cmds::store_get_dns_list,
             commands::store_cmds::store_add_dns,
             commands::store_cmds::store_update_dns,
@@ -72,6 +89,10 @@ pub fn run() {
             commands::store_cmds::store_get_settings,
             commands::store_cmds::store_save_settings,
             commands::store_cmds::store_restore_seed,
+            commands::store_cmds::store_export_backup,
+            commands::store_cmds::store_import_backup,
+            commands::store_cmds::store_fetch_remote_dns,
+            // اپلیکیشن و دیالوگ‌ها
             commands::app_cmds::app_get_info,
             commands::app_cmds::app_open_external,
             commands::app_cmds::app_open_adapters_page,
@@ -81,6 +102,7 @@ pub fn run() {
             let _ = store::seed::seed_from_bat_folder(&seed_dir());
             let _ = store::seed::ensure_curated_seed();
             create_main_window(app)?;
+            let _ = tray::setup_tray(app.handle());
             Ok(())
         })
         .run(tauri::generate_context!())

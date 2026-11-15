@@ -1,9 +1,9 @@
 {
   "name": "dns-switcher",
   "productName": "DNS Switcher",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Modern DNS switcher for Windows — profiles, drag-reorder, per-profile colors, appearance settings",
-  "author": "MahdiDev",
+  "author": "mahdi-hp.ir",
   "license": "MIT",
   "homepage": "https://mahdi-hp.ir",
   "private": true,

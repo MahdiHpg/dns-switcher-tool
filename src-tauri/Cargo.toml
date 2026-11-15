@@ -1,8 +1,8 @@
 [package]
 name = "dns-switcher"
-version = "1.1.0"
+version = "1.2.0"
 description = "Modern DNS switcher for Windows — profiles, drag-reorder, per-profile colors, appearance settings"
-authors = ["MahdiDev"]
+authors = ["mahdi-hp.ir"]
 license = "MIT"
 edition = "2021"
 rust-version = "1.77"
@@ -14,11 +14,13 @@ name = "dns_switcher_lib"
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
-tauri = { version = "2", features = [] }
+tauri = { version = "2", features = ["tray-icon"] }
 tauri-plugin-dialog = "2"
 tauri-plugin-single-instance = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+tokio = { version = "1", features = ["net", "time", "rt-multi-thread", "macros"] }
+winreg = "0.55"
 
 # کوچکترین باینری ممکن: بهینه‌سازی برای حجم، حذف نمادها و LTO
 [profile.release]

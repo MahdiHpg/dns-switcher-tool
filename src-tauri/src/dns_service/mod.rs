@@ -1,18 +1,27 @@
 //! سرویس DNS ویندوز — معادل `dns-service.js`
 //!
-//! بیش از دو تکه است، پس طبق قواعد پروژه داخل پوشه‌ی هم‌نام `dns_service/` نشسته‌اند:
-//! `exec` اجرای فرمان، `adapters` خواندن آداپتورها، `elevate` اجرای ادمین و `validate` اعتبارسنجی.
+//! ماژول‌های این بخش:
+//! `exec` اجرای فرمان، `adapters` خواندن آداپتورها، `elevate` اجرای ادمین، `validate` اعتبارسنجی،
+//! `benchmark` سنجش پینگ، `reachability` بررسی رفع تحریم، `autostart` شروع خودکار و `doh` دی‌ان‌اس امن.
 
 pub mod adapters;
+pub mod autostart;
+pub mod benchmark;
+pub mod doh;
 pub mod elevate;
 pub mod exec;
+pub mod reachability;
 pub mod validate;
 
 use serde_json::Value;
 
 pub use adapters::get_adapters;
+pub use autostart::{is_autostart_enabled, set_autostart};
+pub use benchmark::benchmark_dns_list;
+pub use doh::set_doh_template;
 pub use elevate::{run_elevated, DnsOp, ElevatedResult, OpKind};
-pub use validate::is_valid_ip;
+pub use reachability::{check_all_services, ServiceCheck};
+pub use validate::{is_ipv4, is_ipv6, is_valid_ip};
 
 /// خواندن لیست رشته‌ای از payload ورودی UI
 fn string_list(value: Option<&Value>) -> Vec<String> {

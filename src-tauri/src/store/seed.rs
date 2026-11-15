@@ -102,6 +102,9 @@ pub fn seed_from_bat_folder(dir: &Path) -> usize {
             primary: primary.clone(),
             secondary,
             profile_id: primary_to_profile(&primary),
+            primary_ipv6: None,
+            secondary_ipv6: None,
+            doh_template: None,
         });
         added += 1;
     }
@@ -198,6 +201,9 @@ pub fn ensure_curated_seed() -> usize {
             primary: (*primary).to_string(),
             secondary: (*secondary).to_string(),
             profile_id: (*profile).to_string(),
+            primary_ipv6: None,
+            secondary_ipv6: None,
+            doh_template: None,
         });
         added += 1;
     }
